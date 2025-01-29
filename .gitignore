@@ -30,6 +30,7 @@ next-env.d.ts
 
 # sanity
 /studio/dist
+.sanity
 
 # nuxt.js
 .nuxt/

@@ -12,10 +12,9 @@ export const config = {
   // - static files like favicon.ico, robots.txt, ...
   matcher: [
     '/',
+    '/((?!api|_next|_vercel|studio|.*\\..*).*)',
     // Match all locale prefixes
     '/(no|en|ar)/:path*',
-
-    '/((?!api|_next|_vercel|.*\\..*).*)',
   ]
 };
 

@@ -1,8 +1,9 @@
-const dayjs = require('dayjs');
-const _ = require('lodash');
-const localizedFormat = require('dayjs/plugin/localizedFormat')
-dayjs.extend(localizedFormat)
-require('dayjs/locale/nb')
+import dayjs from 'dayjs';
+import _ from 'lodash';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import 'dayjs/locale/nb';
+
+dayjs.extend(localizedFormat);
 
 // eslint-disable-next-line max-params
 export const timespanAsString = (bb, eb, date, be, ee, lang) => {
