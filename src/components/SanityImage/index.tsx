@@ -9,7 +9,7 @@ interface SanityImageProps {
 
 export default function SanityImage(props: SanityImageProps) {
   const { image: source, priority, className } = props;
-  const alt = source?.alt ?? "An image without an alt, whoops";
+  const alt = source?.alt ?? "";
 
   if (!source?.asset) {
     return <div className="bg-zinc-400 dark:bg-zinc-800" />;

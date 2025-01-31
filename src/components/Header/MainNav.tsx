@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Bars4Icon } from '@heroicons/react/24/outline'
 import { cva, type VariantProps } from 'class-variance-authority'
+import React, { useState } from 'react'
 
 const mainNavButtonVariants = cva(
   'rounded-md text-xs flex items-center gap-1',
@@ -28,13 +29,14 @@ const mainNavButtonVariants = cva(
 )
 
 interface MainNavProps extends React.ComponentProps<'div'>, VariantProps<typeof mainNavButtonVariants> {
-  children: React.ReactNode
+  children: React.ReactElement<{ onNavigate?: () => void, onClick?: (e: React.MouseEvent) => void }>
 }
 
 export function MainNav({ children, layout, size }: MainNavProps) {
   const params = useParams()
   const lang = params?.lang as string
   const t = useTranslations('MainNav')
+  const [open, setOpen] = useState(false);
 
   if (!lang) {
     console.error('Language parameter is missing')
@@ -42,7 +44,7 @@ export function MainNav({ children, layout, size }: MainNavProps) {
   }
 
   return (
-    <Dialog aria-label='primary navigation'>
+    <Dialog aria-label='primary navigation' open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -55,11 +57,21 @@ export function MainNav({ children, layout, size }: MainNavProps) {
           {t('menu')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-5/6 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-900">
+      <DialogContent
+        className="w-5/6 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-900"
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.tagName === 'A' || target.closest('a')) {
+            setOpen(false);
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>{t('menu')}</DialogTitle>
         </DialogHeader>
-        {children}
+        {children && React.isValidElement(children)
+          ? React.cloneElement(children, { onNavigate: () => setOpen(false) })
+          : children}
       </DialogContent>
     </Dialog>
   )
