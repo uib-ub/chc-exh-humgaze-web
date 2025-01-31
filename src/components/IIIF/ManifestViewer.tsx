@@ -1,6 +1,12 @@
 "use client"
+import dynamic from "next/dynamic";
 
-import { Viewer } from '@samvera/clover-iiif'
+const Viewer = dynamic(
+  () => import("@samvera/clover-iiif/viewer").then((Clover) => Clover.default),
+  {
+    ssr: false,
+  },
+);
 
 const customTheme = {
   colors: {
