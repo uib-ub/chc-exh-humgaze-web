@@ -20,7 +20,10 @@ async function getMenuData(lang: string) {
   }
 }
 
-export async function MainNavContent({ lang }: Readonly<{ lang: string }>) {
+export async function MainNavContent({ lang, onNavigate }: Readonly<{
+  lang: string,
+  onNavigate?: () => void
+}>) {
   const data = await getMenuData(lang)
 
   return (
@@ -35,12 +38,12 @@ export async function MainNavContent({ lang }: Readonly<{ lang: string }>) {
           {section?.target && (
             <li className='text-md font-light first:mt-0 mt-4'>
               {section?.target?.route &&
-                <Link href={`/${section?.target?.route}`}>
+                <Link href={`/${section?.target?.route}`} onClick={onNavigate}>
                   {section?.target?.label?.[lang]}
                 </Link>
               }
               {section?.target?.link &&
-                <Link href={`${section?.target?.link}`}>
+                <Link href={`${section?.target?.link}`} onClick={onNavigate}>
                   {section?.target?.label?.[lang]}
                 </Link>
               }
@@ -49,12 +52,16 @@ export async function MainNavContent({ lang }: Readonly<{ lang: string }>) {
           <ul>
             {section?.links?.map((link: any) => (
               <li key={link._key} className='mt-1 pl-4'>
-                {link?.target?.route && <Link href={`/${link?.target?.route}`}>
-                  {link?.label?.[lang] || link?.target?.label?.[lang]}
-                </Link>}
-                {link?.target?.link && <Link href={`${link?.target?.link}`}>
-                  {link?.label?.[lang] || link?.target?.label?.[lang]}
-                </Link>}
+                {link?.target?.route &&
+                  <Link href={`/${link?.target?.route}`} onClick={onNavigate}>
+                    {link?.label?.[lang] || link?.target?.label?.[lang]}
+                  </Link>
+                }
+                {link?.target?.link &&
+                  <Link href={`${link?.target?.link}`} onClick={onNavigate}>
+                    {link?.label?.[lang] || link?.target?.label?.[lang]}
+                  </Link>
+                }
               </li>
             ))}
           </ul>
