@@ -1,22 +1,22 @@
 import { defineType } from 'sanity';
 
-const i18nConfig = {
-  base: "no",
-  languages: [
-    {
-      "id": "no",
-      "title": "Bokmål"
-    },
-    {
-      "id": "en",
-      "title": "English"
-    },
-    {
-      "id": "ar",
-      "title": "Arabic"
-    },
-  ]
-}
+const languages = [
+  {
+    id: "no",
+    title: "Norwegian (Bokmål)",
+    isDefault: true
+  },
+  {
+    id: "en",
+    title: "English",
+  },
+  {
+    id: "ar",
+    title: "Arabic"
+  },
+]
+
+export const baseLanguage = languages.find(l => l.isDefault)
 
 export default defineType({
   name: 'LocalizedText',
@@ -32,10 +32,10 @@ export default defineType({
       },
     },
   ],
-  fields: i18nConfig.languages.map((lang) => ({
+  fields: languages.map((lang) => ({
     title: lang.title,
     name: lang.id,
     type: 'text',
-    fieldset: lang.id === i18nConfig.base ? undefined : 'translations',
+    fieldset: lang.isDefault ? undefined : 'translations',
   })),
 })
