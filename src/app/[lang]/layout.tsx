@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic'
-
 import { ThemeProvider } from '@/src/components/providers/theme-provider'
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
@@ -27,10 +25,10 @@ import { ExternalLinkIcon } from 'lucide-react';
 import { urlFor } from '@/src/sanity/lib/utils';
 import { stegaClean } from 'next-sanity';
 
-export function generateStaticParams() {
+/* export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
-
+ */
 const merriweathersans = Merriweather_Sans({
   subsets: ['latin'],
   variable: '--font-merriweathersans',
@@ -133,13 +131,13 @@ export default async function RootLayout({
         </Script>
       </head>
       <body className='min-h-screen'>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             <AppShell>
               <PanesShell>
                 <Pane intent='sidebar' padded={false}>
@@ -174,29 +172,9 @@ export default async function RootLayout({
                 </Pane>
               </PanesShell>
             </AppShell>
-          </NextIntlClientProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
 }
-
-{/* <div className='flex flex-col min-h-screen'>
-              <header className='px-3 py-3 sticky top-0 w-full z-10'>
-                <div className='flex gap-2 justify-between'>
-                  <MainNav>
-                    <MainNavContent lang={lang} />
-                  </MainNav>
-                  <div className='p-0 md:px-2 md:py-2 gap-3 flex-col bg-white/70 dark:bg-white/10 backdrop-blur-sm rounded'>
-                    <div className='flex gap-2 align-middle'>
-                      <LocaleSwitcher layout='header' />
-                      <ThemeSwitch layout='header' />
-                    </div>
-                  </div>
-                </div>
-              </header>
-              <main className='flex-grow'>
-                {children}
-              </main>
-              <Footer locale={lang} className='mx-auto mt-16 pb-32 self-end' />
-            </div> */}

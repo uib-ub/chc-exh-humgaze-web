@@ -1,16 +1,13 @@
-export const dynamic = 'force-dynamic'
-
 import { sanityFetch } from '@/src/sanity/lib/fetch'
 import { item } from '@/src/sanity/lib/queries/fragments'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { Description } from '@/src/components/Props/Description'
-import { CodeBracketSquareIcon, IdentificationIcon, SwatchIcon } from '@heroicons/react/24/outline'
+import { CodeBracketSquareIcon, IdentificationIcon } from '@heroicons/react/24/outline'
 import ManifestViewer from "@/src/components/IIIF/ManifestViewer"
 import { Subjects } from '@/src/components/Props/Subjects'
-import { Palette } from '@/src/components/Props/Palette'
 import { getLabel } from '@/src/lib/utils'
 import { Footer } from '@/src/components/Footer'
 import { stegaClean } from 'next-sanity'
+import { publicDocumentTypes } from '@/src/sanity/constants/publicDocumentTypes'
 
 const getItem = async (id: string, lang: string) => {
   const data = await sanityFetch({
@@ -199,15 +196,22 @@ export default async function ItemPage({ params }: { params: Promise<{ lang: str
   )
 }
 
-/* export async function generateStaticParams() {
-  const results = await sanityFetch({
-    query: `*[_type in $publicDocumentTypes]._id`,
-    params: { publicDocumentTypes }
-  })
+export async function generateStaticParams() {
+  try {
+    const results = await sanityFetch({
+      query: `*[_type in $publicDocumentTypes]._id`,
+      params: { publicDocumentTypes },
+      perspective: 'published',
+      stega: false,
+    })
 
-  return results.flatMap((id: string) => [
-    { lang: 'en', id },
-    { lang: 'no', id }
-  ])
+    return results.flatMap((id: string) => [
+      { lang: 'en', id },
+      { lang: 'no', id },
+      { lang: 'ar', id },
+    ])
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    return []
+  }
 }
- */

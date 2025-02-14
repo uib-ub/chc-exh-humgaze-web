@@ -10,13 +10,15 @@ import { PanesShell } from '../../components/shells/PanesShell'
 import { TextBlocks } from '../../components/TextBlocks'
 
 async function getData(lang: string) {
-  const data = await sanityFetch({ query: siteSettings, params: { language: lang } })
+  const data = await sanityFetch({
+    query: siteSettings,
+    params: { language: lang },
+  })
   return data
 }
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  // Enable static rendering
   setRequestLocale(lang);
 
   const t = await getTranslations('HomePage')
